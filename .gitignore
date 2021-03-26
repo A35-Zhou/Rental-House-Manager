@@ -1,0 +1,7 @@
+# Default ignored files
+/.idea
+/.vscode
+/.testdb
+/db.sqlite3
+/Manager/__pycache__
+/RentalHouseManager/__pycache__
