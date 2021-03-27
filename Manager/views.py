@@ -1,11 +1,13 @@
 from django.contrib import auth
-from django.http import HttpResponse
-from django.shortcuts import render
+# from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.urls import reverse
 from django.views import View
 
 from Manager import models
-from Manager.forms.regform import RegForm
+from Manager.forms.regForm import RegForm
+from Manager.forms.rspwdForm import RspwdForm
 
 
 # Create your views here.
@@ -17,7 +19,7 @@ class Register(View):
     def get(self, request):
         """
         针对get请求的响应
-        :param request: django路由响应需携带request对象
+        :param request: django路由响应默认携带request对象
         :return: 返回register.html
         """
         regForm = RegForm()
@@ -26,7 +28,7 @@ class Register(View):
     def post(self, request):
         """
         针对post请求的响应
-        :param request: django路由响应需携带request对象
+        :param request: django路由响应默认携带request对象
         :return: 返回form表单校验结果 ret:1注册成功 0用户输入错误 -1数据库操作失败
         """
         resultData = {'ret': None}
@@ -58,7 +60,7 @@ class Login(View):
     def get(self, request):
         """
         针对get请求的响应
-        :param request: django路由响应需携带request对象
+        :param request: django路由响应默认携带request对象
         :return: 返回register.html
         """
         return render(request, 'login.html')
@@ -66,7 +68,7 @@ class Login(View):
     def post(self, request):
         """
         针对post请求的响应
-        :param request: django路由响应需携带request对象
+        :param request: django路由响应默认携带request对象
         :return: 返回登录校验结果 ret:1登录成功 0用户名或密码错误
         """
         resultData = {'ret': None}
@@ -83,3 +85,58 @@ class Login(View):
             resultData['ret'] = 0
             resultData['msg'] = '用户名或者密码错误'
         return JsonResponse(resultData)
+
+
+class MainPage(View):
+    """
+    主页
+    """
+
+    def get(self, request):
+        """
+        返回主页html
+        :param request: django路由响应默认携带request对象
+        :return:返回mainpage.html渲染页面
+        """
+        rspwdForm = RspwdForm()
+        return render(request, 'mainpage.html', locals())
+
+
+class ResetPassword(View):
+    """
+    修改密码相关操作
+    """
+    def post(self, request):
+        """
+        处理修改用户密码的请求
+        :param request: django路由响应默认携带request对象
+        :return:返回修改请求的结果
+        """
+        resultData = {'ret': None}
+        if request.is_ajax():
+            rspwdForm = RspwdForm(request.POST)
+            if rspwdForm.is_valid():
+                try:
+                    request.user.set_password(request.POST.get('newpassword'))
+                    request.user.save()
+                except:
+                    resultData['ret'] = -1
+                    resultData['msg'] = '错误：后端数据库操作失败\n请联系管理员:\n'
+                    for superuser in models.User.objects.filter(is_superuser=1):
+                        resultData['msg'] += superuser.email
+                else:
+                    resultData['ret'] = 1
+                    resultData['url'] = reverse('user:login')
+            else:
+                resultData['ret'] = 0
+                resultData['msg'] = rspwdForm.errors
+        return JsonResponse(resultData)
+
+
+class Logout(View):
+    """
+    处理用户退出登录的请求
+    """
+    def get(self, request):
+        auth.logout(request)
+        return redirect('/')

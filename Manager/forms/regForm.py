@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# @File  : regform.py
+# @File  : regForm.py
 # @Author: A35_Zhou
 # @Date  : 2021/3/25
 # @Software: PyCharm
@@ -34,8 +34,8 @@ class RegForm(forms.Form):
                                max_length=16,
                                error_messages={
                                    'required': '密码不能为空',
-                                   'min_length': '用户名最少5位',
-                                   'max_length': '用户名最大16位'
+                                   'min_length': '密码最少5位',
+                                   'max_length': '密码最大16位'
                                },
                                widget=forms.PasswordInput(attrs={'class': 'form-control'})
                                )

@@ -121,3 +121,4 @@ dmypy.json
 /db.sqlite3
 /Manager/__pycache__
 /RentalHouseManager/__pycache__
+/Manager/migrations
