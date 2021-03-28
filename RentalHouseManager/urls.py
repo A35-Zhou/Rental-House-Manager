@@ -14,12 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from Manager import views
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('user/', include('Manager.urls', namespace='user')),
-    path('', views.MainPage.as_view()),
-    ]
+from django.views.static import serve
+from RentalHouseManager import settings
 
+urlpatterns = [
+    path('admin/', admin.site.urls, name='admin'),
+    path('user/', include('Manager.urls', namespace='user')),
+    path('', views.MainPage.as_view(), name='home'),
+    re_path(r'^files/(?P<path>.*)', serve, {'document_root': settings.MEDIA_ROOT}),
+]

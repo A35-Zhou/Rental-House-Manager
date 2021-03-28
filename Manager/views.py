@@ -99,6 +99,7 @@ class MainPage(View):
         :return:返回mainpage.html渲染页面
         """
         rspwdForm = RspwdForm()
+        houseInfo = models.HouseInfo.objects.all()[0]
         return render(request, 'mainpage.html', locals())
 
 
@@ -137,6 +138,26 @@ class Logout(View):
     """
     处理用户退出登录的请求
     """
+
     def get(self, request):
+        """
+        处理用户退出登录相关请求
+        :param request: django路由响应默认携带request对象
+        :return: 回到主页
+        """
         auth.logout(request)
         return redirect('/')
+
+
+class UserMgr(View):
+    """
+    处理用户管理相关请求
+    """
+
+    def get(self, request):
+        """
+        处理用户管理相关请求
+        :param request: django路由响应默认携带request对象
+        :return: 回到主页
+        """
+        return render(request, 'usermgr.html', locals())
