@@ -69,7 +69,7 @@
 </tbody>
 </table>
 
-### 1.2 管理员模块
+### 1.2 管理员模块(由django.admin实现)
 
 <table>
 <caption>管理员模块/功能</caption>

@@ -1,4 +1,4 @@
-"""RentalHouseManager URL Configuration
+"""iframe_api URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -13,18 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include, re_path
-import Manager.views
-import iframe_api.views
+from django.contrib.auth.decorators import login_required
+from django.urls import path
+from iframe_api import views
 
-from django.views.static import serve
-from RentalHouseManager import settings
-
+app_name = 'iframe_api'
 urlpatterns = [
-    path('admin/', admin.site.urls, name='admin'),
-    path('user/', include('Manager.urls', namespace='user')),
-    path('', Manager.views.MainPage.as_view(), name='home'),
-    path('iframe_api/', include('iframe_api.urls', namespace='iframe_api')),
-    re_path(r'^files/(?P<path>.*)', serve, {'document_root': settings.MEDIA_ROOT}),
+    path('account/', login_required(views.Account.as_view()), name='account'),
+    path('userdetail/', login_required(views.UserDetail.as_view()), name='userdetail'),
+    path('mgrhome/', login_required(views.Home.as_view()), name='home'),
 ]

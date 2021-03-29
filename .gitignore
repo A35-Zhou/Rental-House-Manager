@@ -123,3 +123,6 @@ dmypy.json
 /RentalHouseManager/__pycache__
 /Manager/migrations
 /Manager/forms/__pycache__
+/iframe_api/__pycache__
+/iframe_api/migrations
+/iframe_api/forms/__pycache__

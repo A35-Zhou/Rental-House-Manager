@@ -1,6 +1,6 @@
 $('#btn_commit').click(function () {
     let formData = new FormData();
-    $.each($('#regForm').serializeArray(), function (index, item) {
+    $.each($('#accountForm').serializeArray(), function (index, item) {
         formData.append(item.name, item.value)
     });
     $.ajax({
@@ -11,8 +11,8 @@ $('#btn_commit').click(function () {
         processData: false,
         success: function (resultData) {
             if (resultData.ret == 1) {
-                alert('注册成功')
-                window.location.href = resultData.url
+                alert('修改成功')
+                window.location.reload()
             } else if (resultData.ret == 0) {
                 $.each(resultData.msg, function (index, item) {
                     let eleId = '#id_' + index;
@@ -24,7 +24,6 @@ $('#btn_commit').click(function () {
                 console.log('ret:', resultData.ret, '/n', '错误：未知ret码,请联系管理员')
             }
         }
-
     })
 });
 $('input').focus(function () {

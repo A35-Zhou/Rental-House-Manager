@@ -31,25 +31,26 @@ class Register(View):
         :param request: django路由响应默认携带request对象
         :return: 返回form表单校验结果 ret:1注册成功 0用户输入错误 -1数据库操作失败
         """
-        resultData = {'ret': None}
-        regForm = RegForm(request.POST)
-        if regForm.is_valid():
-            vaildData = regForm.cleaned_data
-            vaildData.pop('repassword')
-            try:
-                models.User.objects.create_user(**vaildData)
-            except:
-                resultData['ret'] = -1
-                resultData['msg'] = '错误：后端数据库操作失败\n请联系管理员:\n'
-                for superuser in models.User.objects.filter(is_superuser=1):
-                    resultData['msg'] += superuser.email
+        if request.is_ajax():
+            resultData = {'ret': None}
+            regForm = RegForm(request.POST)
+            if regForm.is_valid():
+                vaildData = regForm.cleaned_data
+                vaildData.pop('repassword')
+                try:
+                    models.User.objects.create_user(**vaildData)
+                except Exception as e:
+                    resultData['ret'] = -1
+                    resultData['msg'] = f'{e}\n错误：后端数据库操作失败\n请联系管理员:\n'
+                    for superuser in models.User.objects.filter(is_superuser=1):
+                        resultData['msg'] += superuser.email
+                else:
+                    resultData['ret'] = 1
+                    resultData['url'] = 'user/login/'
             else:
-                resultData['ret'] = 1
-                resultData['url'] = 'user/login/'
-        else:
-            resultData['ret'] = 0
-            resultData['msg'] = regForm.errors
-        return JsonResponse(resultData)
+                resultData['ret'] = 0
+                resultData['msg'] = regForm.errors
+            return JsonResponse(resultData)
 
 
 class Login(View):
@@ -107,6 +108,7 @@ class ResetPassword(View):
     """
     修改密码相关操作
     """
+
     def post(self, request):
         """
         处理修改用户密码的请求
@@ -149,7 +151,7 @@ class Logout(View):
         return redirect('/')
 
 
-class UserMgr(View):
+class UserMgrBase(View):
     """
     处理用户管理相关请求
     """
@@ -158,6 +160,7 @@ class UserMgr(View):
         """
         处理用户管理相关请求
         :param request: django路由响应默认携带request对象
-        :return: 回到主页
+        :return: 返回用户管理主页
         """
-        return render(request, 'usermgr.html', locals())
+        houseInfo = models.HouseInfo.objects.all()[0]
+        return render(request, 'usermgr/base.html', locals())

@@ -24,7 +24,6 @@ class RegForm(forms.Form):
     email = forms.EmailField(label='邮箱',
                              required=False,
                              error_messages={
-                                 'required': '邮箱不能为空',
                                  'invalid': '邮箱格式不正确'
                              },
                              widget=forms.EmailInput(attrs={'class': 'form-control'})

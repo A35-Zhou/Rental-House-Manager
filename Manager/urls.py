@@ -23,5 +23,5 @@ urlpatterns = [
     path('login/', views.Login.as_view(), name='login'),
     path('reset_password/', login_required(views.ResetPassword.as_view()), name='reset_password'),
     path('logout/', login_required(views.Logout.as_view()), name='logout'),
-    path('usermgr/', login_required(views.UserMgr.as_view()), name='usermgr'),
+    path('usermgr/', login_required(views.UserMgrBase.as_view()), name='usermgr'),
 ]
