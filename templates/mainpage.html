@@ -91,13 +91,13 @@
                     <h4 class="modal-title">用户密码修改</h4>
                 </div>
                 <div class="modal-body">
-                    <form id="rspwd" class="">
+                    <form id="rspwdForm" class="">
                         {% csrf_token %}
                         <div class='form-group'>
                             <br>
                             <label for="username">用户名</label>
                             <input type="text" name="username" id="username" disabled class="form-control"
-                                value="{{ request.user.username }}">
+                                   value="{{ request.user.username }}">
                         </div>
                         {% for form in rspwdForm %}
                         <div class='form-group'>
@@ -116,6 +116,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     {% endif %}
+
     <script src="/static/js/getcsrftoken.js"></script>
     <script src="/static/js/reset_password.js"></script>
 </body>

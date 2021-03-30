@@ -22,4 +22,9 @@ urlpatterns = [
     path('account/', login_required(views.Account.as_view()), name='account'),
     path('userdetail/', login_required(views.UserDetail.as_view()), name='userdetail'),
     path('mgrhome/', login_required(views.Home.as_view()), name='home'),
+    path('houseinfo/', login_required(views.HouseInfo.as_view()), name='houseinfo'),
+    path('roominfo/', login_required(views.RoomInfo.as_view()), name='roominfo'),
+    path('typeinfo/', login_required(views.TypeInfo.as_view()), name='typeinfo'),
+    path('neworder/', login_required(views.NewOrder.as_view()), name='neworder'),
+    path('userorder/', login_required(views.UserOrder.as_view()), name='userorder'),
 ]

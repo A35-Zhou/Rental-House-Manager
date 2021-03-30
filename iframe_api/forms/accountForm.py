@@ -46,7 +46,7 @@ class AccountForm(forms.Form):
 
     def clean_username(self):
         """
-        变更后是否为已存在用户名
+        使用局部hook校验变更后是否为已存在用户名
         """
         username = self.cleaned_data.get('username')
         is_exist = models.User.objects.filter(username=username)

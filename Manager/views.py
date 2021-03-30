@@ -31,8 +31,8 @@ class Register(View):
         :param request: django路由响应默认携带request对象
         :return: 返回form表单校验结果 ret:1注册成功 0用户输入错误 -1数据库操作失败
         """
+        resultData = {'ret': None}
         if request.is_ajax():
-            resultData = {'ret': None}
             regForm = RegForm(request.POST)
             if regForm.is_valid():
                 vaildData = regForm.cleaned_data
@@ -108,6 +108,15 @@ class ResetPassword(View):
     """
     修改密码相关操作
     """
+
+    def get(self, request):
+        """
+        针对get请求的响应
+        :param request: django路由响应默认携带request对象
+        :return: 返回repassword.html
+        """
+        rspwdForm = RspwdForm()
+        return render(request, 'usermgr/user/repassword.html', locals())
 
     def post(self, request):
         """

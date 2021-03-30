@@ -1,26 +1,22 @@
 $('#btn_commit').click(function () {
-    let url = window.location.pathname;
-    if (url = '/') {
-        url = '/user/reset_password/';
-    } else {
-        url = '';
-    };
     $.ajax({
-        url: url,
+        url: '',
         type: 'post',
         data: {
-            'oldpassword': $('#id_oldpassword').val(),
-            'newpassword': $('#id_newpassword').val(),
-            'repassword': $('#id_repassword').val(),
+            'room': $('#room').val(),
+            'inTime': $('#inTime').val(),
+            'outTime': $('#outTime').val(),
+            'orderDesc': $('#orderDesc').val(),
+            'method': $('#method').val()
         },
         headers: { 'X-CSRFtoken': csrftoken },
         success: function (resultData) {
             if (resultData.ret == 1) {
-                alert('修改成功,请重新登录')
+                alert('预约成功')
                 window.location.href = resultData.url
             } else if (resultData.ret == 0) {
                 $.each(resultData.msg, function (index, item) {
-                    let eleId = '#id_' + index;
+                    let eleId = '#' + index;
                     $(eleId).next().text(item[0]).parent().addClass('has-error')
                 })
             } else if (resultData.ret == -1) {
@@ -31,12 +27,6 @@ $('#btn_commit').click(function () {
         }
     })
 });
-
 $('input').focus(function () {
     $(this).next().text('').parent().removeClass('has-error')
-});
-$('#btn_cancel').click(function () {
-    $('#id_oldpassword').val('');
-    $('#id_newpassword').val('');
-    $('#id_repassword').val('');
 });

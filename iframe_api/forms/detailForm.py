@@ -5,16 +5,10 @@
 # @Software: PyCharm
 from django import forms
 
-from Manager import models
-
-from django import forms
-
-from Manager import models
-
 
 class DetailForm(forms.Form):
     """
-    使用django中的form组件生成帐号信息界面form表单，并对用户输入内容校验
+    使用django中的form组件生成个人信息界面form表单，并对用户输入内容校验
     """
     realname = forms.CharField(label='真实姓名',
                                max_length=16,
@@ -43,6 +37,7 @@ class DetailForm(forms.Form):
         使用局部hook校验用户身份证号是否正确
         """
         idCard = self.cleaned_data.get('idCard')
-        if not len(str(idCard)) == 18:
-            self.add_error('phone', '身份证号为18位')
+        if idCard is not None:
+            if not len(str(idCard)) == 18:
+                self.add_error('idCard', '身份证号为18位')
         return idCard
