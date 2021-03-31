@@ -119,9 +119,9 @@ class Contract(models.Model):
     outTime = models.DateField(verbose_name='离开时间')
     createTime = models.DateTimeField(verbose_name='合同创建时间', auto_now_add=True)
     rPay = models.FloatField(verbose_name='实付金额')
-    payState = models.BooleanField(verbose_name='支付情况', default=False)
+    payState = models.BooleanField(verbose_name='支付情况', choices=((True, '已支付'), (False, '未支付')), default=False)
     contract = models.TextField(verbose_name='合同内容', default='合同内容')
-    signature = models.FileField(verbose_name='实体合同', upload_to='Contracts')
+    signature = models.FileField(verbose_name='实体合同', upload_to='Contracts', null=True, blank=True)
 
     def __str__(self):
         return str(self.contractId)

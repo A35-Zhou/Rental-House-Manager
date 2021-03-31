@@ -245,7 +245,8 @@ class NewOrder(View):
                     vaildData['room_id'] = request.POST.get('room')
                     vaildData['orderDesc'] = request.POST.get('orderDesc')
                     self.database_update(vaildData, resultData)
-                    models.Room.objects.filter(roomId=request.POST.get('room')).update(state=1)
+                    models.Room.objects.filter(roomId=vaildData['room_id']).update(state=1)
+                    # models.User.objects.filter(id=vaildData['user_id']).update(room_id=vaildData['room_id'])
                 else:
                     resultData['ret'] = 0
                     resultData['msg'] = orderForm.errors
@@ -274,7 +275,7 @@ class NewOrder(View):
 
 class UserOrder(View):
     """
-    返回用户订单信息
+    返回用户订单信息,并处理订单支付
     """
 
     def get(self, request):
@@ -283,5 +284,58 @@ class UserOrder(View):
         :param request: django路由响应默认携带request对象
         :return: 返回用户订单信息
         """
-
+        userorders = models.Order.objects.filter(user_id=request.user.id)
         return render(request, 'usermgr/order/userorder.html', locals())
+
+    def post(self, request):
+        """
+        处理用户订单支付相关请求
+        :param request: django路由响应默认携带request对象
+        :return: 返回用户订单结果
+        """
+        resultData = {'ret': None}
+        userorder = models.Order.objects.filter(user_id=request.user.id)
+        self.pay(request, resultData)
+        if resultData['ret']:
+            try:
+                models.User.objects.filter(id=request.user.id).update(room=userorder.first().room)
+                models.Room.objects.filter(roomId=userorder.first().room_id).update(state=1)
+                userorder.update(payState=True)
+            except Exception as e:
+                resultData['ret'] = -1
+                resultData['msg'] = f'{e}\n错误：支付成功但后端数据库操作失败\n请联系管理员:\n'
+                for superuser in models.User.objects.filter(is_superuser=1):
+                    resultData['msg'] += superuser.email
+        return JsonResponse(resultData)
+
+    def pay(self, request, resultData):
+        """
+        可以继承改写UserOrder类重写pay方法
+        :param request: django路由响应默认携带request对象，可以获取当前操作用户信息，用户网络响应信息等
+        :param resultData: 支付结果接口数据
+        :return: 返回支付结果以dict形式封装 ret：0支付失败 1支付成功 msg需要返回给前端的失败信息
+        """
+        pass
+        return resultData
+
+
+class Contract(View):
+    """
+    展示用户合同
+    """
+
+    def get(self, request):
+        """
+        返回合同查找结果
+        :param request: django路由响应默认携带request对象
+        :return: 合同列表
+        """
+        contractId = request.GET.get('contractId')
+        usercontracts = models.Contract.objects.filter(user_id=request.user.id)
+        try:
+            contractId = int(contractId)
+            usercontract = models.Contract.objects.filter(contractId=contractId).first()
+            print(usercontract)
+            return render(request, 'usermgr/contract/mycontract.html', locals())
+        except TypeError as e:
+            return render(request, 'usermgr/contract/contract.html', locals())

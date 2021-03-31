@@ -1,6 +1,6 @@
 from django.contrib import auth
 # from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.http import JsonResponse
 from django.urls import reverse
 from django.views import View
@@ -173,3 +173,7 @@ class UserMgrBase(View):
         """
         houseInfo = models.HouseInfo.objects.all()[0]
         return render(request, 'usermgr/base.html', locals())
+
+
+def page_not_found(request, exception):
+    return render(request, 'error404.html', status=404)

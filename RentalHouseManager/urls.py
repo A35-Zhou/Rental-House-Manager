@@ -28,3 +28,5 @@ urlpatterns = [
     path('iframe_api/', include('iframe_api.urls', namespace='iframe_api')),
     re_path(r'^files/(?P<path>.*)', serve, {'document_root': settings.MEDIA_ROOT}),
 ]
+
+handler404 = Manager.views.page_not_found

@@ -27,4 +27,5 @@ urlpatterns = [
     path('typeinfo/', login_required(views.TypeInfo.as_view()), name='typeinfo'),
     path('neworder/', login_required(views.NewOrder.as_view()), name='neworder'),
     path('userorder/', login_required(views.UserOrder.as_view()), name='userorder'),
+    path('contract/', login_required(views.Contract.as_view()), name='contract'),
 ]
