@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 import Manager.views
-import iframe_api.views
+# import iframe_api.views
 
 from django.views.static import serve
 from RentalHouseManager import settings

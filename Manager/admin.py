@@ -5,6 +5,7 @@ from Manager import models
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import ModelAdmin
 
+
 # Register your models here.
 # admin.site.register(models.User)
 # admin.site.register(models.UserDetail)
@@ -13,9 +14,9 @@ from django.contrib.admin import ModelAdmin
 # admin.site.register(models.Order)
 # admin.site.register(models.HouseInfo)
 # admin.site.register(models.Contract)
-houseInfo = models.HouseInfo.objects.all()[0]
-admin.site.site_header = f'{houseInfo.houseName}管理系统'
-admin.site.site_title = f'{houseInfo.houseName}后台管理系统'
+# houseInfo = models.HouseInfo.objects.all()[0]
+# admin.site.site_header = f'{houseInfo.houseName}管理系统'
+# admin.site.site_title = f'{houseInfo.houseName}后台管理系统'
 
 
 # Model Admin

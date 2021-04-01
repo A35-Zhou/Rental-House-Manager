@@ -471,36 +471,36 @@
 
 ## 5 第一次运行
 
-1. 运行前配置Python虚拟环境确保为3.6.8版本
+此处不提供生产环境的部署方法
 
-2. 设置RentalHouseManage/settings.py中设置DEBUG为False
+1. 运行前可配置Python虚拟环境确保为3.6.8版本
 
-3. cd进入本系统文件根目录下以虚拟环境执行下面命令以获取正确的运行环境
+2. cd进入本系统文件根目录下以虚拟环境执行下面命令以获取正确的运行环境
 
    ```shell
    pip3 install -r requirement.txt
    ```
 
-4. 在配置好数据库后，系统文件根目录下执行下面命令以完成数据模型构建
+3. 在配置好数据库后，系统文件根目录下执行下面命令以完成数据模型构建
 
    ```shell
    pyhon3 manager.py makemigrations
    pyhon3 manager.py migrate
    ```
 
-5. 以上完成后，系统文件根目录下执行下面命令，输入用户名，密码，邮箱以创建超级管理员
+4. 以上完成后，系统文件根目录下执行下面命令，输入用户名，密码，邮箱以创建超级管理员
 
    ```shell
    pyhon3 manager.py createsuperuser
    ```
 
-6. 最后输入以下命令运行系统(ip为ip地址，port为端口）
+5. 最后输入以下命令运行系统
 
    ```shell
-   pyhon3 manager.py runserver ip:port
+   pyhon3 manager.py runserver
    ```
 
-7. 在浏览器中输入ip:port能进入主页即为正常运行
+6. 在浏览器中输入127.0.0.1：8000能进入主页即为正常运行
 
 ## 6 目前存在的不足
 
